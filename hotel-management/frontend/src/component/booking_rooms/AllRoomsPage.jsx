@@ -125,51 +125,23 @@ const AllRoomsPage = () => {
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        // Try to get all available rooms first (no authentication needed)
-        const response = await ApiService.getAllAvailableRooms();
+        // Get all rooms (public endpoint, no authentication needed)
+        const response = await ApiService.getAllRooms();
         const allRooms = response?.roomList;
         if (Array.isArray(allRooms) && allRooms.length > 0) {
           setRooms(allRooms);
           setFilteredRooms(allRooms);
         } else {
-          // If no available rooms, try to get all rooms (might require auth)
-          try {
-            const allRoomsResponse = await ApiService.getAllRooms();
-            const allRoomsList = allRoomsResponse?.roomList;
-            if (Array.isArray(allRoomsList) && allRoomsList.length > 0) {
-              setRooms(allRoomsList);
-              setFilteredRooms(allRoomsList);
-            } else {
-              // Only use fallback if both API calls fail
-              console.warn('No rooms found in database, using fallback rooms');
-              setRooms(FALLBACK_ROOMS);
-              setFilteredRooms(FALLBACK_ROOMS);
-            }
-          } catch (allRoomsError) {
-            console.error('Error fetching all rooms:', allRoomsError.message);
-            // Only use fallback if both API calls fail
-            setRooms(FALLBACK_ROOMS);
-            setFilteredRooms(FALLBACK_ROOMS);
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching available rooms:', error.message);
-        // Try fallback to getAllRooms
-        try {
-          const allRoomsResponse = await ApiService.getAllRooms();
-          const allRoomsList = allRoomsResponse?.roomList;
-          if (Array.isArray(allRoomsList) && allRoomsList.length > 0) {
-            setRooms(allRoomsList);
-            setFilteredRooms(allRoomsList);
-          } else {
-            setRooms(FALLBACK_ROOMS);
-            setFilteredRooms(FALLBACK_ROOMS);
-          }
-        } catch (allRoomsError) {
-          console.error('Error fetching all rooms:', allRoomsError.message);
+          // Only use fallback if API call fails or returns empty
+          console.warn('No rooms found in database, using fallback rooms');
           setRooms(FALLBACK_ROOMS);
           setFilteredRooms(FALLBACK_ROOMS);
         }
+      } catch (error) {
+        console.error('Error fetching rooms:', error.message);
+        // Use fallback rooms if API call fails
+        setRooms(FALLBACK_ROOMS);
+        setFilteredRooms(FALLBACK_ROOMS);
       }
     };
 
