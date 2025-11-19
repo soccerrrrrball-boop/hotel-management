@@ -1,6 +1,6 @@
 [build]
-  command = "npm run build"
-  publish = "build"
+  command = "cd hotel-management/frontend && npm install && npm run build"
+  publish = "hotel-management/frontend/build"
 
 [[redirects]]
   from = "/*"

@@ -27,11 +27,22 @@ public class CorsConfig {
                         .map(String::trim)
                         .filter(s -> !s.isEmpty())
                         .toArray(String[]::new);
-                registry.addMapping("/**")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedOrigins(origins)
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
+                
+                // If using wildcard "*", cannot use allowCredentials
+                boolean useWildcard = origins.length == 1 && "*".equals(origins[0]);
+                
+                if (useWildcard) {
+                    registry.addMapping("/**")
+                            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                            .allowedOrigins("*")
+                            .allowedHeaders("*");
+                } else {
+                    registry.addMapping("/**")
+                            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                            .allowedOrigins(origins)
+                            .allowedHeaders("*")
+                            .allowCredentials(true);
+                }
             }
         };
     }
