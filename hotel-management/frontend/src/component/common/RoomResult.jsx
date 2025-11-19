@@ -12,22 +12,28 @@ const RoomResult = ({ roomSearchResults }) => {
           {roomSearchResults.map((room, index) => {
             const key = room.id ?? `fallback-room-${index}`;
             // Check if room has a valid ID (not null, undefined, or 0)
-            const hasValidId = room.id != null && room.id !== undefined && room.id !== 0;
+            // Also check for alternative ID fields
+            const hasValidId = (room.id != null && room.id !== undefined && room.id !== 0) || 
+                               (room.roomId != null && room.roomId !== undefined);
             const handleAdminClick = () => {
               if (!hasValidId) return;
               navigate(`/admin/edit-room/${room.id}`);
             };
             const handleBookClick = () => {
-              if (!hasValidId) {
-                console.warn('Cannot book room: missing room ID', room);
+              // Always allow navigation - if ID is missing, try to use index or roomType as fallback
+              const roomId = room.id || room.roomId || (room.roomType ? `type-${room.roomType}` : null);
+              
+              if (!roomId) {
+                console.error('Cannot book room: missing all identifiers', room);
                 alert('This room is not available for booking. Please try another room.');
                 return;
               }
+              
               // Check if user is authenticated, if not redirect to login
               if (!ApiService.isAuthenticated()) {
-                navigate('/login', { state: { from: { pathname: `/room-details-book/${room.id}` } } });
+                navigate('/login', { state: { from: { pathname: `/room-details-book/${roomId}` } } });
               } else {
-                navigate(`/room-details-book/${room.id}`);
+                navigate(`/room-details-book/${roomId}`);
               }
             };
             const handleImageError = (e) => {

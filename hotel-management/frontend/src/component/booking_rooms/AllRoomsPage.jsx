@@ -130,26 +130,35 @@ const AllRoomsPage = () => {
         console.log('API Response:', response);
         const allRooms = response?.roomList || response?.rooms || [];
         console.log('Extracted rooms:', allRooms);
+        
         if (Array.isArray(allRooms) && allRooms.length > 0) {
           // Log first room to check structure
           if (allRooms[0]) {
             console.log('First room structure:', allRooms[0]);
             console.log('First room ID:', allRooms[0].id);
           }
-          setRooms(allRooms);
-          setFilteredRooms(allRooms);
+          
+          // Filter out any rooms without IDs (shouldn't happen, but just in case)
+          const validRooms = allRooms.filter(room => room.id != null && room.id !== undefined);
+          
+          if (validRooms.length > 0) {
+            setRooms(validRooms);
+            setFilteredRooms(validRooms);
+          } else {
+            console.error('All rooms from API are missing IDs!', allRooms);
+            // Don't use fallback - show error instead
+            alert('Error: Rooms data is invalid. Please refresh the page or contact support.');
+          }
         } else {
-          // Only use fallback if API call fails or returns empty
-          console.warn('No rooms found in database, using fallback rooms');
-          setRooms(FALLBACK_ROOMS);
-          setFilteredRooms(FALLBACK_ROOMS);
+          console.error('API returned empty or invalid room list:', response);
+          alert('No rooms available. Please try again later or contact support.');
         }
       } catch (error) {
         console.error('Error fetching rooms:', error.message);
         console.error('Error details:', error);
-        // Use fallback rooms if API call fails
-        setRooms(FALLBACK_ROOMS);
-        setFilteredRooms(FALLBACK_ROOMS);
+        console.error('API Base URL:', ApiService.BASE_URL);
+        // Don't use fallback - show error to user
+        alert(`Error loading rooms: ${error.message}. Please check your connection and try again.`);
       }
     };
 
