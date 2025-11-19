@@ -87,7 +87,7 @@ const RoomResult = ({ roomSearchResults }) => {
                       onClick={handleBookClick}
                       disabled={!hasValidId}
                     >
-                      {hasValidId ? 'View/Book Now' : 'View Unavailable'}
+                      {hasValidId ? 'View/Book Room' : 'View Unavailable'}
                     </button>
                   )}
                 </div>
