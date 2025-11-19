@@ -30,10 +30,10 @@ public class AwsS3Service {
 
     private static final Logger log = LoggerFactory.getLogger(AwsS3Service.class);
 
-    @Value("${aws.s3.access.key}")
+    @Value("${aws.s3.access-key}")
     private String awsS3AccessKey;
 
-    @Value("${aws.s3.secret.key}")
+    @Value("${aws.s3.secret-key}")
     private String awsS3SecretKey;
 
     public String saveImageToS3(MultipartFile photo) {
