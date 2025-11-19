@@ -13,16 +13,23 @@ This guide explains how to deploy the Hotel Management System to Render (backend
 
 ### Step 1: Prepare Backend for Render
 
-1. Push your code to GitHub
+**Important**: The `render.yaml` file must be in the root of your repository (or in `hotel-management/` if that's your repo root).
+
+1. Push your code to GitHub (make sure `render.yaml` is in the repository root)
 2. Go to [Render Dashboard](https://dashboard.render.com)
-3. Click "New +" → "Web Service"
+3. Click "New +" → "Blueprint"
 4. Connect your GitHub repository
-5. Configure the service:
+5. Render will automatically detect and use the `render.yaml` file
+
+**OR** manually create a Web Service:
+1. Click "New +" → "Web Service"
+2. Connect your GitHub repository
+3. Configure the service:
    - **Name**: `hotel-management-backend`
-   - **Environment**: `Java`
+   - **Environment**: `Java` (NOT Docker)
+   - **Root Directory**: `hotel-management/backend` (or `backend` if `hotel-management` is your repo root)
    - **Build Command**: `mvn clean package -DskipTests`
    - **Start Command**: `java -jar target/*.jar`
-   - **Root Directory**: `hotel-management/backend`
 
 ### Step 2: Set Environment Variables in Render
 
