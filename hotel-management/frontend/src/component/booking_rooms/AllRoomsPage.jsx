@@ -127,8 +127,15 @@ const AllRoomsPage = () => {
       try {
         // Get all rooms (public endpoint, no authentication needed)
         const response = await ApiService.getAllRooms();
-        const allRooms = response?.roomList;
+        console.log('API Response:', response);
+        const allRooms = response?.roomList || response?.rooms || [];
+        console.log('Extracted rooms:', allRooms);
         if (Array.isArray(allRooms) && allRooms.length > 0) {
+          // Log first room to check structure
+          if (allRooms[0]) {
+            console.log('First room structure:', allRooms[0]);
+            console.log('First room ID:', allRooms[0].id);
+          }
           setRooms(allRooms);
           setFilteredRooms(allRooms);
         } else {
@@ -139,6 +146,7 @@ const AllRoomsPage = () => {
         }
       } catch (error) {
         console.error('Error fetching rooms:', error.message);
+        console.error('Error details:', error);
         // Use fallback rooms if API call fails
         setRooms(FALLBACK_ROOMS);
         setFilteredRooms(FALLBACK_ROOMS);

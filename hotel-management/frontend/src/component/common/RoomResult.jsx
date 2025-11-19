@@ -11,7 +11,8 @@ const RoomResult = ({ roomSearchResults }) => {
         <div className="room-list">
           {roomSearchResults.map((room, index) => {
             const key = room.id ?? `fallback-room-${index}`;
-            const hasValidId = room.id !== null && room.id !== undefined;
+            // Check if room has a valid ID (not null, undefined, or 0)
+            const hasValidId = room.id != null && room.id !== undefined && room.id !== 0;
             const handleAdminClick = () => {
               if (!hasValidId) return;
               navigate(`/admin/edit-room/${room.id}`);
@@ -40,7 +41,7 @@ const RoomResult = ({ roomSearchResults }) => {
 
             // Debug: Log room data
             if (index === 0) {
-              console.log('Room data:', { id: room.id, roomType: room.roomType, roomPhotoUrl: room.roomPhotoUrl });
+              console.log('Room data:', { id: room.id, roomType: room.roomType, roomPhotoUrl: room.roomPhotoUrl, hasValidId });
             }
 
             return (
