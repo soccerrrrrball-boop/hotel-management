@@ -10,3 +10,11 @@
 [build.environment]
   NODE_VERSION = "18"
 
+# Set the backend API URL for production builds
+# Replace with your actual backend URL (Render, EC2, etc.)
+[context.production.environment]
+  REACT_APP_API_URL = "https://hotel-management-system-5iby.onrender.com"
+
+[context.deploy-preview.environment]
+  REACT_APP_API_URL = "https://hotel-management-system-5iby.onrender.com"
+

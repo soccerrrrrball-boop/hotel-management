@@ -125,10 +125,13 @@ const AllRoomsPage = () => {
   useEffect(() => {
     const fetchRooms = async () => {
       try {
+        console.log('Fetching rooms from:', ApiService.BASE_URL);
         // Get all rooms (public endpoint, no authentication needed)
         const response = await ApiService.getAllRooms();
-        console.log('API Response:', response);
+        console.log('Full API Response:', JSON.stringify(response, null, 2));
+        
         const allRooms = response?.roomList || response?.rooms || [];
+        console.log('Extracted rooms count:', allRooms.length);
         console.log('Extracted rooms:', allRooms);
         
         if (Array.isArray(allRooms) && allRooms.length > 0) {
@@ -136,26 +139,41 @@ const AllRoomsPage = () => {
           if (allRooms[0]) {
             console.log('First room structure:', allRooms[0]);
             console.log('First room ID:', allRooms[0].id);
+            console.log('First room image URL:', allRooms[0].roomPhotoUrl);
+            console.log('First room has image?', !!allRooms[0].roomPhotoUrl);
           }
           
           // Filter out any rooms without IDs (shouldn't happen, but just in case)
           const validRooms = allRooms.filter(room => room.id != null && room.id !== undefined);
           
+          // Log rooms with/without images
+          const roomsWithImages = validRooms.filter(room => room.roomPhotoUrl && room.roomPhotoUrl.trim() !== '');
+          const roomsWithoutImages = validRooms.filter(room => !room.roomPhotoUrl || room.roomPhotoUrl.trim() === '');
+          console.log(`Rooms with images: ${roomsWithImages.length}, Rooms without images: ${roomsWithoutImages.length}`);
+          
           if (validRooms.length > 0) {
             setRooms(validRooms);
             setFilteredRooms(validRooms);
+            
+            // Warn if many rooms are missing images
+            if (roomsWithoutImages.length > 0) {
+              console.warn(`${roomsWithoutImages.length} rooms are missing image URLs:`, 
+                roomsWithoutImages.map(r => ({ id: r.id, type: r.roomType })));
+            }
           } else {
             console.error('All rooms from API are missing IDs!', allRooms);
-            // Don't use fallback - show error instead
             alert('Error: Rooms data is invalid. Please refresh the page or contact support.');
           }
         } else {
           console.error('API returned empty or invalid room list:', response);
+          console.error('Response status:', response?.statusCode);
+          console.error('Response message:', response?.message);
           alert('No rooms available. Please try again later or contact support.');
         }
       } catch (error) {
         console.error('Error fetching rooms:', error.message);
         console.error('Error details:', error);
+        console.error('Error response:', error.response?.data);
         console.error('API Base URL:', ApiService.BASE_URL);
         // Don't use fallback - show error to user
         alert(`Error loading rooms: ${error.message}. Please check your connection and try again.`);

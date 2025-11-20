@@ -108,8 +108,17 @@ export default class ApiService {
     }
     /* This  gets all rooms from the database */
     static async getAllRooms() {
-        const result = await axios.get(`${this.BASE_URL}/rooms/all`)
-        return result.data
+        try {
+            const result = await axios.get(`${this.BASE_URL}/rooms/all`)
+            console.log('getAllRooms response status:', result.status);
+            console.log('getAllRooms response data:', result.data);
+            return result.data
+        } catch (error) {
+            console.error('getAllRooms error:', error);
+            console.error('Error response:', error.response?.data);
+            console.error('Error status:', error.response?.status);
+            throw error; // Re-throw to let caller handle it
+        }
     }
     /* This funcction gets a room by the id */
     static async getRoomById(roomId) {

@@ -38,7 +38,12 @@ const RoomResult = ({ roomSearchResults }) => {
             };
             const handleImageError = (e) => {
               // Fallback to a placeholder image if the image fails to load
-              console.error('Image failed to load:', room.roomPhotoUrl);
+              console.error('Image failed to load for room:', {
+                id: room.id,
+                type: room.roomType,
+                imageUrl: room.roomPhotoUrl,
+                error: e.target.error
+              });
               e.target.onerror = null; // Prevent infinite loop
               e.target.src = 'https://via.placeholder.com/400x300?text=Room+Image';
             };
