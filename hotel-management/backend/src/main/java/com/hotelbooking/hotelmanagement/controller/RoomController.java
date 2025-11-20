@@ -43,6 +43,17 @@ public class RoomController {
     @GetMapping("/all")
     public ResponseEntity<Response> getAllRooms() {
         Response response = roomService.getAllRooms();
+        // Log response for debugging
+        if (response.getRoomList() != null) {
+            System.out.println("getAllRooms: Returning " + response.getRoomList().size() + " rooms");
+            if (!response.getRoomList().isEmpty()) {
+                System.out.println("First room: id=" + response.getRoomList().get(0).getId() + 
+                                  ", type=" + response.getRoomList().get(0).getRoomType() + 
+                                  ", photoUrl=" + response.getRoomList().get(0).getRoomPhotoUrl());
+            }
+        } else {
+            System.out.println("getAllRooms: roomList is null!");
+        }
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 

@@ -47,8 +47,11 @@ public class CorsConfig {
         // Allow all HTTP methods including OPTIONS
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         
-        // Allow all headers
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        // Allow all headers - use explicit list instead of "*" for better browser compatibility
+        configuration.setAllowedHeaders(Arrays.asList(
+            "Origin", "X-Requested-With", "Content-Type", "Accept", 
+            "Authorization", "Cache-Control", "Pragma"
+        ));
         
         // Allow credentials (cookies, authorization headers)
         if (!useWildcard) {
@@ -89,13 +92,13 @@ public class CorsConfig {
                     registry.addMapping("/**")
                             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                             .allowedOrigins("*")
-                            .allowedHeaders("*")
+                            .allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization", "Cache-Control", "Pragma")
                             .maxAge(3600);
                 } else {
                     registry.addMapping("/**")
                             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                             .allowedOrigins(origins)
-                            .allowedHeaders("*")
+                            .allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization", "Cache-Control", "Pragma")
                             .allowCredentials(true)
                             .maxAge(3600);
                 }

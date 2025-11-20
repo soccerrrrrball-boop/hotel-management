@@ -48,16 +48,27 @@ public class CorsFilter implements Filter {
         // Determine if we should use wildcard
         boolean useWildcard = origins.size() == 1 && "*".equals(origins.get(0));
         
-        // Set CORS headers
+        // Set CORS headers - ALWAYS set them, even for non-OPTIONS requests
         if (useWildcard) {
             response.setHeader("Access-Control-Allow-Origin", "*");
             response.setHeader("Access-Control-Allow-Credentials", "false");
-        } else if (origin != null && origins.contains(origin)) {
-            response.setHeader("Access-Control-Allow-Origin", origin);
-            response.setHeader("Access-Control-Allow-Credentials", "true");
-        } else if (!origins.isEmpty()) {
-            // If origin doesn't match but we have specific origins, use the first one as fallback
-            // This shouldn't happen in production, but prevents errors
+        } else if (origin != null) {
+            // Check if origin matches any allowed origin (case-insensitive)
+            boolean originAllowed = origins.stream()
+                    .anyMatch(allowed -> allowed.equalsIgnoreCase(origin) || 
+                                       origin.startsWith(allowed.replace("*", "")));
+            
+            if (originAllowed || origins.isEmpty()) {
+                // Use the request origin if it matches, or if no origins configured
+                response.setHeader("Access-Control-Allow-Origin", origin);
+                response.setHeader("Access-Control-Allow-Credentials", "true");
+            } else if (!origins.isEmpty()) {
+                // If origin doesn't match, use first allowed origin (for preflight)
+                response.setHeader("Access-Control-Allow-Origin", origins.get(0));
+                response.setHeader("Access-Control-Allow-Credentials", "true");
+            }
+        } else if (!origins.isEmpty() && !useWildcard) {
+            // No origin header but we have specific origins - use first one
             response.setHeader("Access-Control-Allow-Origin", origins.get(0));
             response.setHeader("Access-Control-Allow-Credentials", "true");
         } else {
@@ -67,7 +78,9 @@ public class CorsFilter implements Filter {
         }
         
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
-        response.setHeader("Access-Control-Allow-Headers", "*");
+        // Use explicit headers instead of "*" - browsers don't always accept wildcard
+        response.setHeader("Access-Control-Allow-Headers", 
+            "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cache-Control, Pragma");
         response.setHeader("Access-Control-Expose-Headers", "Authorization, Content-Type");
         response.setHeader("Access-Control-Max-Age", "3600");
 
