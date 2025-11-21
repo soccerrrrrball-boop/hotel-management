@@ -13,8 +13,8 @@
 # Set the backend API URL for production builds
 # Replace with your actual backend URL (Render, EC2, etc.)
 [context.production.environment]
-  REACT_APP_API_URL = "https://hotel-management-system-5iby.onrender.com"
+  REACT_APP_API_URL = "https://hotel-management-gv03.onrender.com"
 
 [context.deploy-preview.environment]
-  REACT_APP_API_URL = "https://hotel-management-system-5iby.onrender.com"
+  REACT_APP_API_URL = "https://hotel-management-gv03.onrender.com"
 
