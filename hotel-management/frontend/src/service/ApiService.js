@@ -1,8 +1,13 @@
 import axios from "axios"
 
+// Debug: Log the API URL being used (this will show in browser console)
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5050";
+console.log('🔍 API Base URL configured:', API_URL);
+console.log('🔍 REACT_APP_API_URL env var:', process.env.REACT_APP_API_URL || 'NOT SET');
+
 export default class ApiService {
 
-    static BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5050"
+    static BASE_URL = API_URL
 
     static getHeader() {
         const token = localStorage.getItem("token");
