@@ -7,7 +7,7 @@ const RoomResult = ({ roomSearchResults }) => {
   const isAdmin = ApiService.isAdmin();
   return (
     <section className="room-results">
-      {roomSearchResults && roomSearchResults.length > 0 && (
+      {roomSearchResults && roomSearchResults.length > 0 ? (
         <div className="room-list">
           {roomSearchResults.map((room, index) => {
             const key = room.id ?? `fallback-room-${index}`;
@@ -109,6 +109,19 @@ const RoomResult = ({ roomSearchResults }) => {
               </div>
             );
           })}
+        </div>
+      ) : (
+        <div style={{ 
+          textAlign: 'center', 
+          padding: '40px 20px',
+          color: '#666'
+        }}>
+          <p style={{ fontSize: '18px', marginBottom: '10px' }}>No rooms available</p>
+          <p style={{ fontSize: '14px' }}>
+            {roomSearchResults === null || roomSearchResults === undefined 
+              ? 'Loading rooms...' 
+              : 'Please try again or contact support if the problem persists.'}
+          </p>
         </div>
       )}
     </section>

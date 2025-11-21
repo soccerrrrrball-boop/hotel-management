@@ -114,6 +114,8 @@ const AllRoomsPage = () => {
   const [selectedRoomType, setSelectedRoomType] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [roomsPerPage] = useState(5);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
 
   // Function to handle search results
   const handleSearchResult = (results) => {
@@ -124,6 +126,8 @@ const AllRoomsPage = () => {
 
   useEffect(() => {
     const fetchRooms = async () => {
+      setIsLoading(true);
+      setLoadError(null);
       try {
         console.log('Fetching rooms from:', ApiService.BASE_URL);
         // Get all rooms (public endpoint, no authentication needed)
@@ -162,21 +166,22 @@ const AllRoomsPage = () => {
             }
           } else {
             console.error('All rooms from API are missing IDs!', allRooms);
-            alert('Error: Rooms data is invalid. Please refresh the page or contact support.');
+            setLoadError('Error: Rooms data is invalid. Please refresh the page or contact support.');
           }
         } else {
           console.error('API returned empty or invalid room list:', response);
           console.error('Response status:', response?.statusCode);
           console.error('Response message:', response?.message);
-          alert('No rooms available. Please try again later or contact support.');
+          setLoadError('No rooms available. Please try again later or contact support.');
         }
       } catch (error) {
         console.error('Error fetching rooms:', error.message);
         console.error('Error details:', error);
         console.error('Error response:', error.response?.data);
         console.error('API Base URL:', ApiService.BASE_URL);
-        // Don't use fallback - show error to user
-        alert(`Error loading rooms: ${error.message}. Please check your connection and try again.`);
+        setLoadError(`Error loading rooms: ${error.message}. Please check your connection and try again.`);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -237,7 +242,32 @@ const AllRoomsPage = () => {
       </div>
       
       <RoomSearch handleSearchResult={handleSearchResult} />
-      <RoomResult roomSearchResults={currentRooms} />
+      {isLoading ? (
+        <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+          <p>Loading rooms...</p>
+        </div>
+      ) : loadError ? (
+        <div style={{ textAlign: 'center', padding: '40px 20px', color: '#d32f2f' }}>
+          <p style={{ fontSize: '18px', marginBottom: '10px' }}>⚠️ Error Loading Rooms</p>
+          <p style={{ fontSize: '14px' }}>{loadError}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            style={{ 
+              marginTop: '20px', 
+              padding: '10px 20px', 
+              backgroundColor: '#1976d2', 
+              color: 'white', 
+              border: 'none', 
+              borderRadius: '4px', 
+              cursor: 'pointer' 
+            }}
+          >
+            Retry
+          </button>
+        </div>
+      ) : (
+        <RoomResult roomSearchResults={currentRooms} />
+      )}
 
       <Pagination
         roomsPerPage={roomsPerPage}
