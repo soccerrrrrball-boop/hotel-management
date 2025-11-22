@@ -228,9 +228,15 @@ button[type="submit"]:hover {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-attachment: fixed;
     position: relative;
     height: 500px;
+    min-height: 500px;
+    width: 100%;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .header-banner h1 {
