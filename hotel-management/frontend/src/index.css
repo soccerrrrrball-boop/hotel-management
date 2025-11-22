@@ -224,16 +224,13 @@ button[type="submit"]:hover {
 
 /* The header banner */
 .header-banner {
-    /* background-image: url("../public/assets/images/hotel.webp"); */
+    background-image: url("https://images.yourstory.com/production/document_image/mystoryimage/3ks4f7ym-Book-Online-Hotels-at-affordable-price.jpg?mode=crop&crop=faces&ar=2%3A1&format=auto&w=1920&q=75");
     background-size: cover;
     background-position: center;
-    position: relative;
-    height: 80vh;
-}
-
-.header-banner {
+    background-repeat: no-repeat;
     position: relative;
     height: 500px;
+    overflow: hidden;
 }
 
 .header-banner h1 {
@@ -244,6 +241,10 @@ button[type="submit"]:hover {
 .header-banner h3 {
     color: #f8f3f3;
     font-size: 30px;
+}
+
+.header-image {
+    display: none; /* Hide img tag since we're using CSS background-image */
 }
 
 
