@@ -229,7 +229,6 @@ button[type="submit"]:hover {
 
 /* The header banner */
 .header-banner {
-    background-image: url("./assets/images/header-background.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

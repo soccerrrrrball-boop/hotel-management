@@ -18,7 +18,16 @@ const HomePage = () => {
         <div className="home">
             {/* HEADER / BANNER ROOM SECTION */}
             <section>
-                <header className="header-banner">
+                <header 
+                    className="header-banner"
+                    style={{
+                        backgroundImage: `url(https://chatgpt.com/backend-api/estuary/content?id=file_0000000064287206b2c9fc740c821a9b&ts=489959&p=fs&cid=1&sig=ebb5e2f4ac1b2dc8a542000bf001673b22475a15734771660103907cc16ede7c&v=0)`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundAttachment: 'fixed'
+                    }}
+                >
                     <img src="./assets/images/hotel.webp" alt="Nivora" className="header-image" />
                     <div className="overlay"></div>
                     <div className="animated-texts overlay-content">
