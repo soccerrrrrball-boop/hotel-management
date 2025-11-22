@@ -18,19 +18,25 @@ const HomePage = () => {
         <div className="home">
             {/* HEADER / BANNER ROOM SECTION */}
             <section>
-                <header 
-                    className="header-banner"
-                    style={{
-                        backgroundImage: `url(https://chatgpt.com/backend-api/estuary/content?id=file_0000000064287206b2c9fc740c821a9b&ts=489959&p=fs&cid=1&sig=ebb5e2f4ac1b2dc8a542000bf001673b22475a15734771660103907cc16ede7c&v=0)`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundAttachment: 'fixed'
-                    }}
-                >
+                <header className="header-banner" style={{ position: 'relative' }}>
+                    <div 
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/homepage-background.jpg.png)`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundAttachment: 'fixed',
+                            zIndex: 0
+                        }}
+                    ></div>
                     <img src="./assets/images/hotel.webp" alt="Nivora" className="header-image" />
-                    <div className="overlay"></div>
-                    <div className="animated-texts overlay-content">
+                    <div className="overlay" style={{ zIndex: 1 }}></div>
+                    <div className="animated-texts overlay-content" style={{ zIndex: 2 }}>
                         <h1>
                             Welcome to <span className="phegon-color">Nivora</span>
                         </h1><br />
