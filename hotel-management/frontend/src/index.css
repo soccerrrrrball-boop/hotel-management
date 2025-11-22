@@ -224,7 +224,7 @@ button[type="submit"]:hover {
 
 /* The header banner */
 .header-banner {
-    background-image: url("https://images.yourstory.com/production/document_image/mystoryimage/3ks4f7ym-Book-Online-Hotels-at-affordable-price.jpg?mode=crop&crop=faces&ar=2%3A1&format=auto&w=1920&q=75");
+    background-image: url("./assets/images/header-background.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
