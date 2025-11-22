@@ -93,10 +93,6 @@ body {
 
 .login-page-wrapper {
     min-height: calc(100vh - 200px);
-    background-image: url("/assets/images/login%20page.jpg.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     padding: 50px 20px;
 }
 

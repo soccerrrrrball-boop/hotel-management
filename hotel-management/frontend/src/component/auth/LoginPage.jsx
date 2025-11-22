@@ -35,7 +35,15 @@ function LoginPage() {
     };
 
     return (
-        <div className="login-page-wrapper">
+        <div 
+            className="login-page-wrapper"
+            style={{
+                backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/login page.jpg.png)`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+            }}
+        >
             <div className="auth-container">
                 <h2>Login</h2>
                 {error && <p className="error-message">{error}</p>}
